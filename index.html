@@ -1,0 +1,441 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>حارس المياه | WATER GUARD</title>
+<meta name="description" content="حارس المياه: جهاز ذكي يراقب تدفق المياه، يتعلّم نمط الاستهلاك، يكشف التسرب الخفي ويقفل الصمام تلقائيًا خلال 4 ثوانٍ.">
+<meta property="og:title" content="حارس المياه | WATER GUARD">
+<meta property="og:description" content="كل قطرة لها قيمة، وكل تسريب له إنذار.">
+<meta property="og:image" content="media/poster.webp">
+<meta name="theme-color" content="#060C0B">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Arabic:wght@300;400;500;600;700&family=Noto+Kufi+Arabic:wght@400;500;600;700;800&family=Readex+Pro:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;700&family=Manrope:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/css/style.css">
+<!-- three.js via import map (used by assets/js/device3d.js) -->
+<script type="importmap">{"imports":{"three":"https://cdn.jsdelivr.net/npm/three@0.170.0/build/three.module.js","three/addons/":"https://cdn.jsdelivr.net/npm/three@0.170.0/examples/jsm/"}}</script>
+</head>
+<body>
+<a class="skiplink" href="#main">تخطَّ إلى المحتوى</a>
+
+<!-- =========================================================
+     HEADER — floating glass command bar
+     ========================================================= -->
+<header class="header" id="header">
+  <div class="header__bar">
+    <a href="#top" class="brand" aria-label="حارس المياه — الرئيسية">
+      <span class="brand__mark"><svg viewBox="0 0 190 220" aria-hidden="true"><path d="M95 8 L172 38 V104 C172 156 138 194 95 212 C52 194 18 156 18 104 V38 Z" fill="none" stroke="#2EC4A0" stroke-width="14" stroke-linejoin="round"/><path d="M95 58 C95 58 60 104 60 128 a35 35 0 0 0 70 0 C130 104 95 58 95 58Z" fill="#A6F0DA"/></svg></span>
+      <span class="brand__txt"><span class="brand__ar">حارس المياه</span><span class="brand__en">WATER GUARD</span></span>
+    </a>
+
+    <nav class="nav" id="nav" aria-label="التنقل الرئيسي">
+      <span class="nav__pill" id="navPill"></span>
+      <a href="#intro">المقدمة</a>
+      <a href="#problem">المشكلة</a>
+      <a href="#solution">الحل المبتكر</a>
+      <a href="#how">آلية العمل</a>
+      <a href="#sectors">القطاعات المستهدفة</a>
+      <a href="#vision">رؤية 2030</a>
+    </nav>
+
+    <div class="header__actions">
+      <a href="#lab" class="status" id="statusChip" title="حالة المحاكاة"><span class="dot"></span><span class="lbl" id="statusTxt">مراقبة مستمرة</span></a>
+      <a href="#lab" class="btn btn--primary btn--sm">تجربة المحاكاة 3D</a>
+      <button class="icon-btn burger" id="burger" aria-label="القائمة والأقسام" aria-expanded="false" aria-controls="drawer"><svg class="i-dots" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><circle cx="5" cy="12" r="2.1"/><circle cx="12" cy="12" r="2.1"/><circle cx="19" cy="12" r="2.1"/></svg><svg class="i-close" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18"/></svg></button>
+    </div>
+    <div class="header__progress" aria-hidden="true"><i id="progress"></i></div>
+  </div>
+</header>
+
+<!-- ⋯ menu (tablet + mobile): every section as a tab + the two main actions -->
+<div class="menu" id="drawer" aria-hidden="true">
+  <div class="menu__sheet" role="dialog" aria-label="أقسام الصفحة">
+    <div class="menu__groups">
+      <p class="menu__g">المبادرة</p>
+      <nav class="menu__tabs">
+        <a class="dl" href="#intro"><i class="menu__ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3 11l9-7 9 7M5 10v10h14V10"/></svg></i><span class="t">المقدمة</span><span class="n">01</span></a>
+        <a class="dl" href="#problem"><i class="menu__ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3s-6 7-6 11a6 6 0 0 0 12 0c0-4-6-11-6-11z"/><path d="M12 11v3"/></svg></i><span class="t">المشكلة</span><span class="n">02</span></a>
+        <a class="dl" href="#solution"><i class="menu__ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18h6M10 21h4M12 3a6 6 0 0 0-4 10.5c.7.7 1 1.5 1 2.5h6c0-1 .3-1.8 1-2.5A6 6 0 0 0 12 3z"/></svg></i><span class="t">الحل المبتكر</span><span class="n">03</span></a>
+        <a class="dl" href="#how"><i class="menu__ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="6" cy="12" r="2.5"/><circle cx="18" cy="12" r="2.5"/><path d="M8.5 12h7"/></svg></i><span class="t">آلية العمل</span><span class="n">04</span></a>
+      </nav>
+      <p class="menu__g">التطبيق والأثر</p>
+      <nav class="menu__tabs">
+        <a class="dl" href="#sectors"><i class="menu__ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3 21h18M5 21V9l6-4v16M11 21V5l8 4v12"/></svg></i><span class="t">القطاعات المستهدفة</span><span class="n">05</span></a>
+        <a class="dl" href="#vision"><i class="menu__ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg></i><span class="t">رؤية 2030</span><span class="n">06</span></a>
+      </nav>
+      <p class="menu__g">جرّب بنفسك</p>
+      <nav class="menu__tabs">
+        <a class="dl" href="#calc"><i class="menu__ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="5" y="3" width="14" height="18" rx="2"/><path d="M8 7h8M8 12h2M12 12h2M8 16h2M12 16h2M16 12v4"/></svg></i><span class="t">حاسبة التوفير</span><span class="n">07</span></a>
+        <a class="dl" href="#lab"><i class="menu__ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2l9 5v10l-9 5-9-5V7z"/><path d="M12 22V12M21 7l-9 5-9-5"/></svg></i><span class="t">المحاكاة 3D</span><span class="n">08</span></a>
+      </nav>
+    </div>
+    <div class="drawer__cta" style="grid-template-columns:1fr">
+      <a href="#lab" class="btn btn--primary">تجربة المحاكاة 3D</a>
+    </div>
+  </div>
+</div>
+
+<main id="main">
+<!-- =========================================================
+     HERO — scroll-driven 3D (assets/js/device3d.js)
+     ========================================================= -->
+<section class="intro" id="top" aria-label="مقدمة ثلاثية الأبعاد">
+  <div class="intro__sticky">
+    <div class="intro__fallback"><img src="media/device_cut.webp" alt="النموذج الأولي لجهاز حارس المياه"></div>
+    <canvas class="intro__canvas" id="device3d" aria-hidden="true"></canvas>
+    <div class="labels" id="labels" aria-hidden="true"></div>
+    <div class="intro__veil" id="veil"></div>
+    <div class="intro__ui">
+      <div class="container">
+        <div class="intro__title" id="introTitle">
+          <h1>حارس <b>المياه</b></h1>
+          <p class="tag">«كل قطرة لها قيمة، وكل تسرب له إنذار»</p>
+          <div class="intro__actions">
+            <a href="#intro" class="btn btn--primary" id="enterBtn">ادخل التجربة<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 5v14M5 12l7 7 7-7"/></svg></a>
+          </div>
+        </div>
+        <div class="chapter" data-ch="1">
+          <span class="n">01 — INSTALLED</span>
+          <h2>عند الخزان… <b>قبل أي تفرّع</b></h2>
+          <p>يتركّب على الماسورة الرئيسية، ويراقب كل لتر يدخل المبنى.</p>
+        </div>
+        <div class="chapter" data-ch="2">
+          <span class="n">02 — SIGNAL</span>
+          <h2>يقرأ كل قطرة… <b>لحظة بلحظة</b></h2>
+          <p>ويتعلّم النمط الطبيعي لبيتك، فيعرف التسرب قبل ما تعرفه أنت.</p>
+        </div>
+      </div>
+      <div class="intro__foot">
+        <div class="hint"><span class="mouse"></span>مرّر للدخول</div>
+        <div class="intro__count"><span id="introN">01</span><span class="bar"><i id="introBar"></i></span><span>03</span></div>
+        <a href="#intro" class="skip" id="skipIntro">تخطَّ المقدمة</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- =========================================================
+     المقدمة — original hero + interactive 3D (wires · explode · specs)
+     ========================================================= -->
+<section class="landing" id="intro" aria-labelledby="landing-h">
+  <div class="container">
+    <div class="landing__grid">
+      <div data-reveal>
+        <span class="eyebrow"><span class="dot"></span>مشروع ابتكاري وهندسي · إنترنت الأشياء</span>
+        <h2 id="landing-h">التسرب اللي ما تشوفه… <b class="grad grad--flow">نشوفه نحن</b></h2>
+        <p class="lead">نظام ذكي متكامل لمراقبة تدفق المياه، وتحليل أنماط الاستهلاك الاعتيادية عبر معالجة البيانات، واكتشاف التسربات المخفية مبكرًا وإرسال تنبيهات فورية، للمساهمة في حماية البنية التحتية للمنشآت وترشيد الموارد المائية.</p>
+        <p class="landing__by"><span>«كل قطرة لها قيمة، وكل تسرب له إنذار»</span></p>
+        <div class="hero__cta" style="display:flex;gap:12px;flex-wrap:wrap;margin-top:26px">
+          <a href="#lab" class="btn btn--primary">جرّب النموذج التفاعلي (3D)</a>
+          <a href="#problem" class="btn btn--ghost">اكتشف تفاصيل المشروع</a>
+        </div>
+      </div>
+      <figure class="landing__photo" data-reveal="2" style="margin:0">
+        <img src="media/device_cut.webp" alt="النموذج الأولي الحقيقي لجهاز حارس المياه" width="841" height="893">
+        <figcaption><span>النموذج الأولي الحقيقي</span><span class="mono" style="font-size:11px;letter-spacing:2px;color:var(--aqua-2)">PROTOTYPE · v1</span></figcaption>
+      </figure>
+    </div>
+    <div class="stats" data-reveal>
+      <div class="s"><b>30%–40%</b><span>وفر فواتير المياه</span></div>
+      <div class="s"><b>100%</b><span>رصد التسرب الخفي</span></div>
+      <div class="s"><b dir="rtl">4 ثوانٍ</b><span>إغلاق تلقائي للصمام</span></div>
+      <div class="s"><b>2030</b><span>دعم مستهدفات الرؤية</span></div>
+    </div>
+  </div>
+</section>
+
+
+
+
+
+<!-- =========================================================
+     المشكلة
+     ========================================================= -->
+<section class="section" id="problem" aria-labelledby="problem-h">
+  <div class="container">
+    <div class="shead" data-reveal>
+      <span class="eyebrow">التحدي القائم والمعاناة الواقعية</span>
+      <h2 id="problem-h">المشكلة: <span class="t-coral">استنزاف صامت وأضرار هيكلية باهظة</span></h2>
+    </div>
+    <div class="prob2">
+      <div class="prob2__cards">
+        <article class="panel panel--pad card2" data-reveal><span class="card2__n t-coral">01</span><h3>الهدر الخفي وتآكل الخرسانة</h3><p>تأخر ملحوظ في اكتشاف التسربات الداخلية للمياه داخل الجدران والأرضيات، مما يؤدي إلى تفاقم الأضرار الهيكلية وتآكل حديد التسليح للمنشآت دون علم أصحابها.</p></article>
+        <article class="panel panel--pad card2" data-reveal="2"><span class="card2__n t-amber">02</span><h3>التكلفة المالية الباهظة</h3><p>التسريبات غير المكتشفة تؤدي إلى زيادة مفاجئة وغير مبررة في فواتير المياه بنسب تتراوح بين <b dir="ltr">30%</b> إلى <b dir="ltr">40%</b> شهرياً تثقل كاهل الأفراد والمؤسسات.</p></article>
+        <article class="panel panel--pad card2" data-reveal="3"><span class="card2__n t-aqua">03</span><h3>العائق التقني وغياب التحليل</h3><p>صعوبة التفريق في العدادات الميكانيكية التقليدية بين الاستهلاك البشري الطبيعي وبين التدفق البطيء والمستمر الناتج عن تهريب خفي في شبكة التغذية.</p></article>
+      </div>
+      <figure class="panel prob2__fig" data-reveal="2">
+        <div class="img-card img-card--night"><img src="media/leak_wall_n.webp" alt="تسرب خفي داخل الجدار الخرساني" loading="lazy"></div>
+        <figcaption>
+          <b>تسرب خفي داخل الجدار الخرساني</b>
+          <span class="mono t-aqua">التشخيص الهندسي للرسم الفني (المرفق بالدراسة)</span>
+          <p>يوضح المخطط الهندسي أن تدفق الماء المستمر داخل الماسورة المحاطة بحديد التسليح والخرسانة المسلحة (Reinforcement Bar &amp; Concrete Wall) ينتج عنه تشبع هيكلي (Structural Saturation) وهدر مالي مستمر يصعب تداركه إلا بنظام رصد مبكر مثل «حارس المياه».</p>
+        </figcaption>
+      </figure>
+    </div>
+  </div>
+</section>
+
+<!-- =========================================================
+     الحل المبتكر
+     ========================================================= -->
+<section class="section" id="solution" aria-labelledby="solution-h">
+  <div class="container">
+    <div class="shead" data-reveal>
+      <span class="eyebrow">الابتكار والتقنية الذكية</span>
+      <h2 id="solution-h">الحل المبتكر: <span class="grad">نظام إنذار مبكر ومستشعرات ذكية</span></h2>
+      <p>يقدم «حارس المياه» حلاً متكاملاً يجمع بين العتاد الصلب (Hardware) المصمم لتحمل البيئة التشغيلية، وبين خوارزمية ذكية تتعلم عادات استهلاك المنشأة وترصد أي استهلاك غير طبيعي قبل وقوع الكارثة.</p>
+    </div>
+    <div class="sol2 sol2--cards">
+      <div class="sol2__grid">
+        <article class="panel panel--pad card2" data-reveal><span class="card2__n t-aqua">01</span><h3>المراقبة المستمرة لتدفق المياه</h3><p>قراءة مستمرة لتردد نبضات التوربين النحاسي داخل الماسورة بدقة تصل إلى أجزاء من اللتر لكل دقيقة.</p></article>
+        <article class="panel panel--pad card2" data-reveal="2"><span class="card2__n t-aqua">02</span><h3>التعلم وتحليل أنماط الاستهلاك</h3><p>حساب نمط الاستهلاك الطبيعي وساعات السكون الليلي الخاصة بالمنشأة وتحديد خط الأساس المرجعي.</p></article>
+        <article class="panel panel--pad card2" data-reveal="3"><span class="card2__n t-amber">03</span><h3>الرصد الفوري لأي استهلاك غير طبيعي</h3><p>ملاحظة أي زيادة أو تدفق غير مبرر يختلف عن النمط المعتاد (مثل استمرار الجريان لساعات متواصلة).</p></article>
+        <article class="panel panel--pad card2" data-reveal="4"><span class="card2__n t-coral">04</span><h3>الإنذار الفوري والإغلاق الذكي</h3><p>إرسال إشعارات فورية إلى هاتف المستخدم مع تفعيل صمام الإغلاق الكهروميكانيكي لحماية المكان فوراً.</p></article>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- =========================================================
+     آلية العمل
+     ========================================================= -->
+<section class="section" id="how" aria-labelledby="how-h">
+  <div class="container">
+    <div class="shead" data-reveal>
+      <span class="eyebrow">سلسلة التشغيل المتتابعة</span>
+      <h2 id="how-h">كيف يعمل النظام؟ <span class="grad">(المراحل الأربع)</span></h2>
+    </div>
+    <div class="how">
+      <div class="steps" id="steps" role="tablist" aria-label="مراحل عمل النظام">
+        <button class="step on" role="tab" aria-selected="true"><span class="step__n">1</span><div><small>المرحلة 1</small><h3>المراقبة المستمرة</h3></div><i class="step__bar"></i></button>
+        <button class="step" role="tab" aria-selected="false"><span class="step__n">2</span><div><small>المرحلة 2</small><h3>التعلم والتحليل</h3></div><i class="step__bar"></i></button>
+        <button class="step" role="tab" aria-selected="false"><span class="step__n">3</span><div><small>المرحلة 3</small><h3>الاكتشاف المبكر</h3></div><i class="step__bar"></i></button>
+        <button class="step" role="tab" aria-selected="false"><span class="step__n">4</span><div><small>المرحلة 4</small><h3>الإنذار والإغلاق</h3></div><i class="step__bar"></i></button>
+      </div>
+      <div class="panel panel--pad stage" id="stage" role="tabpanel">
+        <div class="stage__cap"><b id="stageTitle" style="font-family:var(--f-head)"></b><span class="chip mono" id="stageChip"></span></div>
+        <p class="stage__d" id="stageDesc"></p>
+        <svg id="stageSvg" viewBox="0 0 600 340" aria-hidden="true"></svg>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- =========================================================
+     القطاعات المستهدفة
+     ========================================================= -->
+<section class="section" id="sectors" aria-labelledby="sectors-h">
+  <div class="container">
+    <div class="shead" data-reveal>
+      <span class="eyebrow">مجالات التطبيق والتركيب</span>
+      <h2 id="sectors-h">سيناريوهات التركيب <span class="grad">والقطاعات المستهدفة</span></h2>
+    </div>
+    <div class="tabs" role="tablist" id="secTabs">
+      <button role="tab" aria-selected="true" data-s="0">التوزيع السكني (دورات المياه)</button>
+      <button role="tab" aria-selected="false" data-s="1">المباني قيد الإنشاء</button>
+      <button role="tab" aria-selected="false" data-s="2">المباني القائمة</button>
+      <button role="tab" aria-selected="false" data-s="3">القطاع الصناعي والمصانع</button>
+    </div>
+    <div class="panel panel--pad sector" id="sector" data-reveal>
+      <div class="sec-media">
+        <div class="img-card img-card--night"><img id="secImg" src="media/bathroom_n.webp" alt="" loading="lazy"></div>
+        <figure class="sec-dash" id="secDash" hidden><img id="secDashImg" src="" alt="" loading="lazy"></figure>
+      </div>
+      <div id="secBody"></div>
+    </div>
+  </div>
+</section>
+
+<!-- =========================================================
+     رؤية 2030 — الأثر
+     ========================================================= -->
+<section class="section" id="vision" aria-labelledby="vision-h">
+  <div class="container">
+    <div class="shead" data-reveal>
+      <span class="eyebrow">الاستدامة والأثر الوطني</span>
+      <h2 id="vision-h">الأثر المتوقع <span class="grad">وتوافق الرؤية</span></h2>
+      <p>تسعى رؤية المملكة 2030 عبر محورها المتعلق بالمجتمع الحيوي إلى المحافظة على بيئتنا وترشيد استخدام مواردنا الطبيعية من خلال الاستخدام الأمثل للموارد المائية وترشيد الاستهلاك، ويشكل مشروع حارس المياه رافداً تقنياً محورياً لتحقيق هذه الأهداف بالشراكة مع الأفراد وشركة المياه الوطنية (NWC).</p>
+    </div>
+    <div class="impact">
+      <div class="panel panel--pad" data-reveal><div class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="#2EC4A0" stroke-width="2"><path d="M12 3s-6 7-6 11a6 6 0 0 0 12 0c0-4-6-11-6-11z"/></svg></div><h3>تقليل هدر المياه الوطني</h3><p>حماية مليارات الأمتار المكعبة سنوياً من الضياع غير المرئي في شبكات التوزيع والتغذية.</p></div>
+      <div class="panel panel--pad" data-reveal="2"><div class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="#2EC4A0" stroke-width="2"><path d="M3 21h18M5 21V8l7-5 7 5v13M9 21v-6h6v6"/></svg></div><h3>المحافظة على السلامة الإنشائية</h3><p>منع تصدع الأساسات وتشبع الخرسانة المسلحة بالرطوبة وتآكل الحديد في المباني والمنازل.</p></div>
+      <div class="panel panel--pad" data-reveal="3"><div class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="#F4C430" stroke-width="2"><path d="M12 1v22M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg></div><h3>ترشيد الاستهلاك وخفض الفواتير</h3><p>خفض تكلفة فواتير المياه الشهرية بنسب تصل إلى <b dir="ltr">40%</b>، مما يحقق وفراً اقتصادياً مباشراً.</p></div>
+      <div class="panel panel--pad" data-reveal="4"><div class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="#2EC4A0" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M12 2v4M12 18v4M2 12h4M18 12h4M5 5l3 3M16 16l3 3M19 5l-3 3M8 16l-3 3"/></svg></div><h3>تعزيز إدارة شبكات المدن الذكية</h3><p>تمكين شركات المياه وإدارات المرافق من مراقبة الأحمال واكتشاف الأعطال مركزياً.</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- =========================================================
+     حاسبة التوفير
+     ========================================================= -->
+<section class="section" id="calc" aria-labelledby="calc-h">
+  <div class="container">
+    <div class="shead" data-reveal>
+      <span class="eyebrow"><span class="dot"></span>تقدير ذكي</span>
+      <h2 id="calc-h">حاسبة التوفير <span class="grad">المتوقع لمنشأتك</span></h2>
+    </div>
+    <div class="calc" id="tab-facility" data-reveal>
+      <div class="panel panel--pad">
+        <div class="field"><label for="fType">نوع المنشأة</label>
+          <select id="fType"><option value="villa">فيلا سكنية مستقلة</option><option value="apartment">شقة سكنية</option><option value="commercial">عمارة تجارية / مكاتب</option><option value="factory">منشأة صناعية / مصنع</option></select></div>
+        <div class="field"><label for="fPoints">عدد نقاط/دورات المياه <output id="oPoints">3</output></label><input type="range" id="fPoints" min="1" max="15" value="3"></div>
+      </div>
+      <div>
+        <div class="kpis kpis--2">
+          <div class="kpi kpi--ok"><span>كمية المياه الموفرة سنوياً</span><b id="fL" class="t-mint">—</b><small>لتر</small></div>
+          <div class="kpi kpi--ok"><span>الوفر المالي التقديري</span><b id="fS" class="t-mint">—</b><small>ريال سعودي</small></div>
+        </div>
+        <div class="panel panel--pad" style="margin-top:16px">
+          <svg id="facChart" viewBox="0 0 560 230" style="direction:ltr" role="img" aria-label="مقارنة الوفر حسب نوع المنشأة"></svg>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- =========================================================
+     المحاكاة ثلاثية الأبعاد (3D) — live lab
+     ========================================================= -->
+<section class="section" id="lab" aria-labelledby="lab-h">
+  <div class="container">
+    <div class="shead" data-reveal>
+      <span class="eyebrow"><span class="dot"></span>المحاكاة ثلاثية الأبعاد (3D)</span>
+      <h2 id="lab-h">جاهز لمعرض الابتكار <span class="grad">والتحكيم الجامعي</span></h2>
+      <p>استخدم لوحة التحكم في النصف المجاور لتجربة محاكاة التسرب واختبار استجابة الصمام والشاشة.</p>
+      <button class="btn btn--danger" id="labGo" style="margin-top:6px">اختبر سيناريو التسرب الآن</button>
+    </div>
+    <div class="xp">
+      <div class="xp__view">
+      <div class="explorer explorer--hero" data-reveal>
+      <canvas id="explorer" aria-label="النموذج الأولي التفاعلي ثلاثي الأبعاد"></canvas>
+      <div class="labels" id="exLabels"></div>
+      <div class="ex-tools" role="toolbar" aria-label="أدوات العرض">
+        <button class="btn btn--ghost btn--sm" id="exWire" aria-pressed="false">الأسلاك</button>
+        <button class="btn btn--ghost btn--sm" id="exExplode">عرض مفكك</button>
+        <button class="btn btn--ghost btn--sm" data-open="specs">المواصفات</button>
+        <button class="btn btn--ghost btn--sm" data-open="schem">مخطط التوصيل</button>
+        <button class="icon-btn" id="exIn" aria-label="تقريب"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 5v14M5 12h14"/></svg></button>
+        <button class="icon-btn" id="exOut" aria-label="تبعيد"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14"/></svg></button>
+        <button class="icon-btn" id="exReset" aria-label="إعادة الضبط"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 12a9 9 0 1 0 3-6.7L3 8M3 3v5h5"/></svg></button>
+      </div>
+      <div class="ex-hint" id="exHint"><span class="mouse"></span>اسحب لتدوير الجهاز 360° بحرية تامة</div>
+      <aside class="ex-info panel" id="exInfo" aria-live="polite">
+        <span class="mono t-aqua" id="exN">3D</span>
+        <h3 id="exT">النموذج الأولي التفاعلي</h3>
+        <p id="exD"></p>
+        <div class="ex-specs" id="exS"></div>
+      </aside>
+    </div>
+      <!-- wiring map: opens UNDER the 3D view so it never covers the model -->
+      <div class="wiremap" id="wireMap" aria-live="polite"><div class="wiremap__in"><div class="panel wiremap__body">
+        <div class="wiremap__head">
+          <span class="mono t-aqua">WIRING</span>
+          <h3>خريطة الأسلاك</h3>
+          <p>كل لون في المجسّم يطابق لونه هنا. قرّب الجهاز لتقرأ اسم كل منفذ على اللوحة.</p>
+          <button class="btn btn--ghost btn--sm" data-open="schem">مخطط التوصيل الكامل</button>
+        </div>
+        <div class="wire-list" id="wireList"></div>
+      </div></div></div>
+      </div>
+      <div class="panel panel--pad xp__ctrl" data-reveal="2">
+        <div class="oled"><div class="oled__scr" id="oled"></div>
+          <div class="leds"><span class="led g on" id="ledG"><i></i>OK</span><span class="led b on"><i></i>WIFI</span><span class="led r" id="ledR"><i></i>LEAK</span></div>
+        </div>
+        <div class="ctrls">
+          <div class="row">
+            <button class="btn btn--primary btn--sm" id="simRun">تشغيل المحاكاة</button>
+            <button class="btn btn--danger btn--sm" id="simLeak">اكتشاف تسرب</button>
+          </div>
+          <div class="row">
+            <button class="btn btn--ghost btn--sm" id="simHigh">استهلاك مرتفع</button>
+            <button class="btn btn--ghost btn--sm" id="simReset">إعادة ضبط النظام</button>
+          </div>
+        </div>
+        <div class="valve"><span class="t-muted" style="font-size:13.5px">حالة الصمام:</span><b id="valveTxt" class="t-mint">مفتوح (تدفق نشط)</b></div>
+        <button class="btn btn--mint" id="simClose" style="width:100%;margin-top:10px">إغلاق الصمام الذكي فورًا</button>
+        <div class="metrics">
+          <div class="metric"><span>معدل التدفق الحالي</span><b id="mFlow">2.4</b><span>لتر/دقيقة</span></div>
+          <div class="metric"><span>إجمالي الاستهلاك</span><b id="mTotal">125.4</b><span>لتر</span></div>
+          <div class="metric"><span>حالة النظام</span><b id="mState" class="t-mint">مراقبة مستمرة - تدفق طبيعي</b></div>
+          <div class="metric"><span>وفر المياه والإنذارات</span><b id="mSaved" class="t-mint">0</b><span>لتر تم توفيره · <i id="mAlerts" style="font-style:normal">0</i> إنذار</span></div>
+        </div>
+      </div>
+    </div>
+    <div class="panel panel--pad xp__chart" data-reveal>
+        <div style="display:flex;justify-content:space-between;align-items:center;margin-top:16px;gap:10px;flex-wrap:wrap">
+          <b style="font-family:var(--f-head)">رسم بياني لمعدل الاستهلاك والتدفق بمرور الوقت</b>
+          <div class="chart-legend"><span><i style="background:var(--aqua)"></i>التدفق اللحظي</span><span><i style="background:var(--mint)"></i>النمط المرجعي</span><span><i style="background:var(--coral)"></i>حد الإنذار</span></div>
+        </div>
+        <div class="chartbox"><canvas id="simChart"></canvas></div>
+    </div>
+  </div>
+</section>
+
+<!-- alert (phone notification) -->
+<div class="sheet" id="sheet" role="dialog" aria-modal="true" aria-labelledby="sheet-h">
+  <div class="sheet__card">
+    <div class="sheet__top"><span class="app"><svg width="18" height="20" viewBox="0 0 190 220"><path d="M95 58 C95 58 60 104 60 128 a35 35 0 0 0 70 0 C130 104 95 58 95 58Z" fill="#fff"/></svg></span><b style="color:#fff">تنبيه ذكي وعالي الدقة: تدفق غير اعتيادي</b><span style="margin-inline-start:auto">الآن</span></div>
+    <h3 id="sheet-h">«تحذير! تم رصد تسرب نشط في شبكة المياه»</h3>
+    <p id="sheetMsg">رصد مستشعر حارس المياه تدفقاً مستمراً بمعدل 7.6 لتر/دقيقة تجاوز 45 دقيقة بدون توقف في فترة السكون.</p>
+    <div class="loc"><span class="chip">وقت البدء: 02:15 ص</span><span class="chip">الموقع الدقيق: شقة رقم 2، الدور الثالث، دورة المياه</span></div>
+    <div class="actions">
+      <button class="btn btn--danger" id="sheetClose">إغلاق الصمام الذكي فورًا (حماية العقار)</button>
+      <button class="btn btn--ghost" id="sheetDismiss">تأكيد الاستهلاك وتأجيل الإنذار</button>
+    </div>
+  </div>
+</div>
+
+<!-- engineering specs (original component sheet) -->
+<div class="modal" id="m-specs" role="dialog" aria-modal="true" aria-labelledby="specs-h" hidden>
+  <div class="modal__card">
+    <div class="modal__head"><h3 id="specs-h">المواصفات الهندسية للنموذج الأولي</h3><button class="icon-btn" data-close aria-label="إغلاق"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 6l12 12M18 6L6 18"/></svg></button></div>
+    <p class="t-muted" style="margin:0 0 12px;font-size:13.5px">الخصائص والبارامترات التقنية:</p>
+    <div class="comps" id="comps"></div>
+  </div>
+</div>
+
+<!-- wiring diagram -->
+<div class="modal" id="m-schem" role="dialog" aria-modal="true" aria-labelledby="schem-h" hidden>
+  <div class="modal__card modal__card--wide">
+    <div class="modal__head"><h3 id="schem-h">مخطط التوصيل</h3><button class="icon-btn" data-close aria-label="إغلاق"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 6l12 12M18 6L6 18"/></svg></button></div>
+    <p class="schem__swipe">↔ اسحب المخطط يمين ويسار</p>
+    <div class="schem__scroll"><svg viewBox="0 92 1080 384" style="direction:ltr" role="img" aria-labelledby="schem-t"><title id="schem-t">مخطط توصيل حارس المياه: المعالج ESP32 في المنتصف، وكل سلك بلونه</title>
+<style>.ar{font:600 14px "Noto Kufi Arabic","IBM Plex Sans Arabic",sans-serif;fill:#ECF3F1} .en{font:500 11px Manrope,sans-serif;fill:#8A9C98;letter-spacing:1px} .pn{font:600 11px Manrope,sans-serif;fill:#C2D0CC}</style>
+<rect x="400" y="140" width="300" height="190" rx="14" fill="#0D1817" stroke="#2EC4A0" stroke-opacity=".45"/><text x="550.0" y="168" text-anchor="middle" class="ar">المعالج</text><text x="550.0" y="188" text-anchor="middle" class="en">ESP32 · DEVKIT</text><rect x="860" y="100" width="200" height="120" rx="14" fill="#0D1817" stroke="#2EC4A0" stroke-opacity=".45"/><text x="960.0" y="128" text-anchor="middle" class="ar">شاشة OLED</text><text x="960.0" y="148" text-anchor="middle" class="en">SSD1306 · I²C</text><rect x="860" y="250" width="200" height="100" rx="14" fill="#0D1817" stroke="#2EC4A0" stroke-opacity=".45"/><text x="960.0" y="278" text-anchor="middle" class="ar">حساس التدفق</text><text x="960.0" y="298" text-anchor="middle" class="en">YF-S201</text><rect x="470" y="400" width="160" height="62" rx="14" fill="#0D1817" stroke="#FF5A4A" stroke-opacity=".45"/><text x="550.0" y="428" text-anchor="middle" class="ar">بطارية</text><text x="550.0" y="448" text-anchor="middle" class="en">18650 · 3.7V</text><rect x="190" y="110" width="150" height="120" rx="14" fill="#0D1817" stroke="#2EC4A0" stroke-opacity=".45"/><text x="265.0" y="138" text-anchor="middle" class="ar">مرحّل الصمام</text><text x="265.0" y="158" text-anchor="middle" class="en">RELAY 5V</text><rect x="20" y="120" width="120" height="100" rx="14" fill="#0D1817" stroke="#F4C430" stroke-opacity=".45"/><text x="80.0" y="148" text-anchor="middle" class="ar">صمام القطع</text><text x="80.0" y="168" text-anchor="middle" class="en">12V · 90°</text><rect x="190" y="262" width="150" height="96" rx="14" fill="#0D1817" stroke="#2EC4A0" stroke-opacity=".45"/><text x="265.0" y="290" text-anchor="middle" class="ar">مؤشرات LED</text><text x="265.0" y="310" text-anchor="middle" class="en">G · W · R</text><circle cx="400" cy="185" r="4" fill="#D8B26A"/><text x="410" y="189" text-anchor="start" class="pn">5V</text><circle cx="400" cy="205" r="4" fill="#D8B26A"/><text x="410" y="209" text-anchor="start" class="pn">G26</text><circle cx="400" cy="225" r="4" fill="#D8B26A"/><text x="410" y="229" text-anchor="start" class="pn">GND</text><circle cx="400" cy="270" r="4" fill="#D8B26A"/><text x="410" y="274" text-anchor="start" class="pn">G15</text><circle cx="400" cy="290" r="4" fill="#D8B26A"/><text x="410" y="294" text-anchor="start" class="pn">G2</text><circle cx="400" cy="310" r="4" fill="#D8B26A"/><text x="410" y="314" text-anchor="start" class="pn">G4</text><circle cx="700" cy="165" r="4" fill="#D8B26A"/><text x="690" y="169" text-anchor="end" class="pn">SDA · G21</text><circle cx="700" cy="185" r="4" fill="#D8B26A"/><text x="690" y="189" text-anchor="end" class="pn">SCL · G22</text><circle cx="700" cy="205" r="4" fill="#D8B26A"/><text x="690" y="209" text-anchor="end" class="pn">3V3</text><circle cx="700" cy="225" r="4" fill="#D8B26A"/><text x="690" y="229" text-anchor="end" class="pn">GND</text><circle cx="700" cy="270" r="4" fill="#D8B26A"/><text x="690" y="274" text-anchor="end" class="pn">G27</text><circle cx="700" cy="290" r="4" fill="#D8B26A"/><text x="690" y="294" text-anchor="end" class="pn">5V</text><circle cx="700" cy="310" r="4" fill="#D8B26A"/><text x="690" y="314" text-anchor="end" class="pn">GND</text><circle cx="530" cy="330" r="4" fill="#D8B26A"/><text x="540" y="334" text-anchor="start" class="pn">VIN</text><circle cx="590" cy="330" r="4" fill="#D8B26A"/><text x="600" y="334" text-anchor="start" class="pn">GND</text><circle cx="860" cy="140" r="4" fill="#D8B26A"/><text x="870" y="144" text-anchor="start" class="pn">SDA</text><circle cx="860" cy="160" r="4" fill="#D8B26A"/><text x="870" y="164" text-anchor="start" class="pn">SCL</text><circle cx="860" cy="180" r="4" fill="#D8B26A"/><text x="870" y="184" text-anchor="start" class="pn">VCC</text><circle cx="860" cy="200" r="4" fill="#D8B26A"/><text x="870" y="204" text-anchor="start" class="pn">GND</text><circle cx="860" cy="280" r="4" fill="#D8B26A"/><text x="870" y="284" text-anchor="start" class="pn">SIG</text><circle cx="860" cy="300" r="4" fill="#D8B26A"/><text x="870" y="304" text-anchor="start" class="pn">V+</text><circle cx="860" cy="320" r="4" fill="#D8B26A"/><text x="870" y="324" text-anchor="start" class="pn">GND</text><circle cx="340" cy="150" r="4" fill="#D8B26A"/><text x="330" y="154" text-anchor="end" class="pn">VCC</text><circle cx="340" cy="170" r="4" fill="#D8B26A"/><text x="330" y="174" text-anchor="end" class="pn">IN</text><circle cx="340" cy="190" r="4" fill="#D8B26A"/><text x="330" y="194" text-anchor="end" class="pn">GND</text><circle cx="340" cy="282" r="4" fill="#D8B26A"/><text x="330" y="286" text-anchor="end" class="pn">G</text><circle cx="340" cy="302" r="4" fill="#D8B26A"/><text x="330" y="306" text-anchor="end" class="pn">W</text><circle cx="340" cy="322" r="4" fill="#D8B26A"/><text x="330" y="326" text-anchor="end" class="pn">R</text><path d="M700 165 H780.0 V140 H860" stroke="#5BC0FF" stroke-width="3" fill="none" stroke-linecap="round" stroke-linejoin="round" opacity=".95"/><path class="flow" d="M700 165 H780.0 V140 H860" stroke="#fff" stroke-opacity=".7" stroke-width="1.6" fill="none" stroke-linecap="round"/><path d="M700 185 H790.0 V160 H860" stroke="#FFC94A" stroke-width="3" fill="none" stroke-linecap="round" stroke-linejoin="round" opacity=".95"/><path class="flow" d="M700 185 H790.0 V160 H860" stroke="#fff" stroke-opacity=".7" stroke-width="1.6" fill="none" stroke-linecap="round"/><path d="M700 205 H800.0 V180 H860" stroke="#FF5A4A" stroke-width="3" fill="none" stroke-linecap="round" stroke-linejoin="round" opacity=".95"/><path d="M700 225 H810.0 V200 H860" stroke="#5E706C" stroke-width="3" fill="none" stroke-linecap="round" stroke-linejoin="round" opacity=".95"/><path d="M700 270 H790.0 V280 H860" stroke="#2EC4A0" stroke-width="3" fill="none" stroke-linecap="round" stroke-linejoin="round" opacity=".95"/><path class="flow" d="M700 270 H790.0 V280 H860" stroke="#fff" stroke-opacity=".7" stroke-width="1.6" fill="none" stroke-linecap="round"/><path d="M700 290 H800.0 V300 H860" stroke="#FF5A4A" stroke-width="3" fill="none" stroke-linecap="round" stroke-linejoin="round" opacity=".95"/><path d="M700 310 H810.0 V320 H860" stroke="#5E706C" stroke-width="3" fill="none" stroke-linecap="round" stroke-linejoin="round" opacity=".95"/><path d="M400 185 H375.0 V150 H340" stroke="#FF5A4A" stroke-width="3" fill="none" stroke-linecap="round" stroke-linejoin="round" opacity=".95"/><path d="M400 205 H365.0 V170 H340" stroke="#2EC4A0" stroke-width="3" fill="none" stroke-linecap="round" stroke-linejoin="round" opacity=".95"/><path class="flow" d="M400 205 H365.0 V170 H340" stroke="#fff" stroke-opacity=".7" stroke-width="1.6" fill="none" stroke-linecap="round"/><path d="M400 225 H355.0 V190 H340" stroke="#5E706C" stroke-width="3" fill="none" stroke-linecap="round" stroke-linejoin="round" opacity=".95"/><path d="M400 270 H372.0 V282 H340" stroke="#8BE38F" stroke-width="3" fill="none" stroke-linecap="round" stroke-linejoin="round" opacity=".95"/><path class="flow" d="M400 270 H372.0 V282 H340" stroke="#fff" stroke-opacity=".7" stroke-width="1.6" fill="none" stroke-linecap="round"/><path d="M400 290 H362.0 V302 H340" stroke="#E4ECE9" stroke-width="3" fill="none" stroke-linecap="round" stroke-linejoin="round" opacity=".95"/><path class="flow" d="M400 290 H362.0 V302 H340" stroke="#fff" stroke-opacity=".7" stroke-width="1.6" fill="none" stroke-linecap="round"/><path d="M400 310 H352.0 V322 H340" stroke="#FF6A55" stroke-width="3" fill="none" stroke-linecap="round" stroke-linejoin="round" opacity=".95"/><path class="flow" d="M400 310 H352.0 V322 H340" stroke="#fff" stroke-opacity=".7" stroke-width="1.6" fill="none" stroke-linecap="round"/><path d="M530 330 V400" stroke="#FF5A4A" stroke-width="3" fill="none" stroke-linecap="round" stroke-linejoin="round" opacity=".95"/><path d="M590 330 V400" stroke="#5E706C" stroke-width="3" fill="none" stroke-linecap="round" stroke-linejoin="round" opacity=".95"/><path d="M190 160 H140" stroke="#FF5A4A" stroke-width="3" fill="none" stroke-linecap="round" stroke-linejoin="round" opacity=".95"/><path d="M190 190 H140" stroke="#5E706C" stroke-width="3" fill="none" stroke-linecap="round" stroke-linejoin="round" opacity=".95"/><text x="165" y="152" text-anchor="middle" class="pn">COM</text><text x="165" y="206" text-anchor="middle" class="pn">NO</text></svg></div>
+      <div class="lg"><span><i style="--c:#FF5A4A"></i>تغذية 3V3 / 5V</span><span><i style="--c:#5E706C"></i>أرضي GND</span><span><i style="--c:#5BC0FF"></i>بيانات SDA</span><span><i style="--c:#FFC94A"></i>ساعة SCL</span><span><i style="--c:#2EC4A0"></i>إشارة / تحكم</span><span><i style="--c:#8BE38F"></i>مؤشرات LED</span></div>
+  </div>
+</div>
+</main>
+
+<footer class="footer">
+  <div class="container footer__grid">
+    <div>
+      <a href="#top" class="brand"><span class="brand__mark"><svg viewBox="0 0 190 220"><path d="M95 8 L172 38 V104 C172 156 138 194 95 212 C52 194 18 156 18 104 V38 Z" fill="none" stroke="#2EC4A0" stroke-width="14"/><path d="M95 58 C95 58 60 104 60 128 a35 35 0 0 0 70 0 C130 104 95 58 95 58Z" fill="#A6F0DA"/></svg></span><span class="brand__txt"><span class="brand__ar">حارس المياه</span><span class="brand__en">WATER GUARD</span></span></a>
+      <p style="margin-top:14px">مشروع ابتكاري وهندسي · إنترنت الأشياء</p>
+    </div>
+    <div>
+      <b style="color:#fff">«كل قطرة لها قيمة، وكل تسرب له إنذار»</b>
+      <p style="margin-top:10px">WATER GUARD | حارس المياه</p>
+    </div>
+  </div>
+</footer>
+
+
+<button class="icon-btn totop" id="totop" aria-label="العودة للأعلى"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2"><path d="M12 19V5M5 12l7-7 7 7"/></svg></button>
+<div class="toast" id="toast" role="status" aria-live="polite"></div>
+
+<script src="assets/js/main.js" defer></script>
+<script type="module">
+  // 3D: intro (scroll-driven) + explorer (drag/zoom). If WebGL or the CDN fails, the photo fallback stays.
+  import { initDevice } from './assets/js/device3d.js';
+  try { window.__device = initDevice(document.getElementById('device3d'), document.getElementById('labels')); document.documentElement.classList.add('is-3d'); }
+  catch (e) { console.warn('3D disabled:', e); }
+  try {
+    initDevice(document.getElementById('explorer'), document.getElementById('exLabels'), { interactive: true, onSelect: i => window.__exSelect && window.__exSelect(i) })
+      .then(api => { window.__explorer = api; document.documentElement.classList.add('ex-ready'); })
+      .catch(e => console.warn('explorer disabled:', e));
+  } catch (e) { console.warn('explorer disabled:', e); }
+</script>
+</body>
+</html>
